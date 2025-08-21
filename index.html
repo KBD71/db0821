@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap');
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f0f2f5; }
+        .keyword { background-color: #eef2ff; color: #4338ca; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
+        .card { background-color: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); margin-bottom: 2rem; overflow: hidden; transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
+        .card-content { padding: 2.5rem; }
+        .icon-wrapper { display: flex; align-items: center; justify-content: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; margin-right: 1.5rem; flex-shrink: 0; }
+        .icon-wrapper svg { width: 2rem; height: 2rem; color: white; }
+        .bible-passage p { font-family: 'Noto Serif KR', serif; font-size: 1.1rem; line-height: 1.8; color: #374151; margin-bottom: 0.5rem; }
+        .bible-passage p b { color: #b45309; margin-right: 0.5rem; }
+        h1.main-title { font-family: 'Noto Serif KR', serif; font-weight: 700; letter-spacing: -0.025em; color: #111827; }
+        blockquote { border-left: 4px solid #6366f1; padding-left: 1rem; margin: 1.5rem 0; font-style: italic; color: #4b5563; font-size: 1.1rem; font-weight: 500; }
+        .def-list dt { font-weight: 700; color: #1e3a8a; display: flex; align-items: center; margin-bottom: 0.5rem; }
+        .def-list dt svg { width: 1.25rem; height: 1.25rem; margin-right: 0.5rem; color: #4f46e5; }
+        .def-list dd { margin-left: 2rem; margin-bottom: 1.25rem; color: #374151; padding-left: 0.25rem; border-left: 2px solid #e0e7ff; }
+        #hidden-player-container {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+        }
+    </style>
+    <title>온 땅의 주관자, 하나님의 병거들</title>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <div class="container mx-auto max-w-4xl p-4 md:p-8">
+        <header class="text-center mb-16">
+            <h1 class="main-title text-4xl">온 땅의 주관자, 하나님의 병거들</h1>
+            <p class="sermon-date text-lg text-gray-500 mt-4 mb-6">2025년 8월 17일</p>
+            <p class="text-2xl text-indigo-700 font-semibold leading-relaxed">스가랴의 마지막 환상은 온 땅을 다스리시는 하나님의 주권적인 심판과 통치를 보여줍니다.</p>
+            <div class="mt-8">
+                <button id="listen-btn" class="bg-indigo-600 text-white font-bold py-2 px-6 rounded-full hover:bg-indigo-700 transition-colors duration-300 flex items-center justify-center mx-auto" disabled>
+                    <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor" style="display:none;">
+                      <path d="M18 3a1 1 0 00-1.447-.894L4 8.434V6a1 1 0 00-2 0v8a1 1 0 002 0v-2.434l12.553 6.328A1 1 0 0018 17V3z" />
+                    </svg>
+                    <svg id="pause-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor" style="display:none;">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h4a1 1 0 001-1V8a1 1 0 00-1-1H8z" clip-rule="evenodd" />
+                    </svg>
+                    <svg id="loading-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 animate-spin" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 102 0V6z" clip-rule="evenodd" />
+                    </svg>
+                    <span id="button-text">로딩 중...</span>
+                </button>
+            </div>
+        </header>
+        <main>
+            <div class="card">
+                <div class="card-content">
+                    <div class="flex items-center mb-6">
+                        <div class="icon-wrapper bg-amber-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6-2.292m0 0A9.043 9.043 0 0 1 12 6.042"></path></svg>
+                        </div>
+                        <h2 class="text-3xl font-serif font-bold text-gray-800">오늘의 말씀: 스가랴 6:1-8</h2>
+                    </div>
+                    <div class="bible-passage">
+                        <p><b>1</b> 내가 또 눈을 들어 본즉 네 병거가 두 산 사이에서 나오는데 그 산은 놋산이더라</p>
+                        <p><b>2</b> 첫째 병거는 홍마들이, 둘째 병거는 흑마들이,</p>
+                        <p><b>3</b> 셋째 병거는 백마들이, 넷째 병거는 어룽지고 건장한 말들이 메었는지라</p>
+                        <p><b>4</b> 내가 내게 말하는 천사에게 물어 이르되 내 주여 이것들이 무엇이니이까 하니</p>
+                        <p><b>5</b> 천사가 대답하여 이르되 이는 하늘의 네 바람인데 온 세상의 주 앞에 서 있다가 나가는 것이라 하더라</p>
+                        <p><b>6</b> 흑마는 북쪽 땅으로 나가고 백마는 그 뒤를 따르고 어룽진 말은 남쪽 땅으로 나가고</p>
+                        <p><b>7</b> 건장한 말은 나가서 땅에 두루 다니고자 하니 그가 이르되 너희는 여기서 나가서 땅에 두루 다니라 하매 곧 땅에 두루 다니더라</p>
+                        <p><b>8</b> 그가 외쳐 내게 말하여 이르되 북쪽으로 나간 자들이 북쪽에서 내 영을 쉬게 하였느니라 하더라</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <div class="flex items-center mb-6">
+                        <div class="icon-wrapper bg-sky-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.852l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"></path></svg>
+                        </div>
+                        <h2 class="text-3xl font-serif font-bold text-gray-800">본문 이해를 위한 배경지식</h2>
+                    </div>
+                    <dl class="def-list">
+                        <dt><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" /></svg>놋산 (Mountains of Bronze)</dt>
+                        <dd>놋은 성경에서 주로 심판을 상징합니다. 두 놋산 사이에서 병거들이 나오는 것은, 하나님의 심판이 흔들리지 않는 견고한 계획과 결정 가운데서 나온다는 것을 의미합니다. 이는 하나님의 심판이 우연이나 변덕이 아님을 강조합니다.</dd>
+                        <dt><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" /></svg>네 병거와 말들 (Four Chariots and Horses)</dt>
+                        <dd>이들은 <span class="keyword">하늘의 네 바람</span>으로, 온 세상을 순찰하며 하나님의 명령을 수행하는 천사적 존재들을 상징합니다. 각기 다른 색의 말들은 전쟁(홍마), 기근과 죽음(흑마), 승리(백마), 그리고 역병(어룽진 말) 등 다양한 종류의 하나님의 심판과 통치를 나타냅니다. 이들은 온 세상의 주인이신 하나님 앞에서 대기하다가 명령을 받아 땅으로 나갑니다.</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <div class="flex items-center mb-6">
+                        <div class="icon-wrapper bg-indigo-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 1.5m-5-1.5l1 1.5m0 0l.5 1.5m.5-1.5l.5 1.5m0 0l.5 1.5m1-1.5l.5 1.5m0 0l.5 1.5m-1.5-.5l.5 1.5m0 0l.5 1.5m0 0l.5 1.5m0 0l.5 1.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <h2 class="text-3xl font-serif font-bold text-gray-800">설교의 핵심: 하나님의 주권적 통치와 심판</h2>
+                    </div>
+                    <p class="text-lg leading-relaxed mb-4">스가랴의 여덟 번째 마지막 환상은 이전의 모든 환상을 종합하며, 온 땅을 향한 하나님의 절대적인 통치와 주권을 선포합니다. 이 환상은 이스라엘뿐만 아니라 모든 열방이 하나님의 심판 아래 있음을 분명히 보여줍니다.</p>
+                    <blockquote>하나님의 심판은 견고하고 불변하는 계획 속에서 나옵니다. 두 놋산은 하나님의 심판의 근원이 얼마나 확고한지를 상징합니다.</blockquote>
+                    <p class="text-lg leading-relaxed mt-4 mb-4">네 병거는 하나님의 명령을 수행하기 위해 파견되는 천사들을 상징합니다. 이들은 온 땅을 두루 다니며 하나님의 뜻을 이룹니다. 특히 북쪽 땅으로 향하는 병거들은 이스라엘을 괴롭혔던 바벨론과 같은 대적들에 대한 심판을 의미합니다. 흑마(죽음, 기근)와 백마(승리)가 함께 북쪽으로 가는 것은, 대적의 완전한 멸망과 하나님의 백성을 위한 완전한 승리를 나타냅니다.</p>
+                    <p class="text-lg leading-relaxed mt-4">8절의 "<span class="keyword">내 영을 쉬게 하였느니라</span>"는 말씀은 '내 마음을 시원하게 했다'는 의미입니다. 즉, 북쪽으로 간 병거들이 하나님의 공의를 완전히 실현하고 대적을 심판함으로써, 하나님의 진노가 그치고 마음이 만족과 평안을 얻으셨음을 뜻합니다. 이는 하나님의 심판이 감정적인 보복이 아니라, 공의의 실현임을 보여줍니다.</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <div class="flex items-center mb-6">
+                        <div class="icon-wrapper bg-emerald-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.898 20.572L16.5 21.75l-.398-1.178a3.375 3.375 0 00-2.3-2.3L12.75 18l1.178-.398a3.375 3.375 0 002.3-2.3L16.5 14.25l.398 1.178a3.375 3.375 0 002.3 2.3l1.178.398-1.178.398a3.375 3.375 0 00-2.3 2.3z"></path></svg>
+                        </div>
+                        <h2 class="text-3xl font-serif font-bold text-gray-800">결론: 우리 삶에 주시는 교훈</h2>
+                    </div>
+                    <p class="text-lg leading-relaxed mb-4">스가랴의 마지막 환상은 우리에게 중요한 교훈을 줍니다. 세상의 모든 일은 우연히 일어나는 것이 아니라, 보좌에 앉으신 하나님의 주권적인 통치 아래 있습니다. 때로는 악이 승리하는 것처럼 보이고, 하나님의 백성이 고통받는 것처럼 보일지라도, 결국 하나님의 공의는 반드시 실현됩니다.</p>
+                    <p class="text-lg leading-relaxed">우리는 이 사실을 믿고 세상의 혼란 속에서도 두려워하지 말아야 합니다. 하나님께서는 당신의 백성을 괴롭히는 모든 대적을 심판하시고, 마침내 당신의 마음이 시원함을 얻으실 때까지, 즉 완전한 공의가 이루어질 때까지 일하십니다. 그러므로 우리는 어떤 상황 속에서도 역사의 주관자이신 하나님을 신뢰하며, 믿음의 길을 굳건히 걸어가야 합니다.</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <div class="flex items-center mb-6">
+                        <div class="icon-wrapper bg-purple-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"></path></svg>
+                        </div>
+                        <h2 class="text-3xl font-serif font-bold text-gray-800">심화 이해: 매튜 헨리 주석</h2>
+                    </div>
+                    <p class="text-lg leading-relaxed mb-4">매튜 헨리 주석은 스가랴 6장의 네 병거를 하나님의 섭리를 집행하는 천사들로 해석합니다. 이 천사들은 온 땅의 주인이신 하나님 앞에서 명령을 받아 각기 다른 임무를 띠고 세상으로 나아갑니다. 두 놋산은 하나님의 흔들리지 않는 작정과 신실하심을 상징하며, 모든 심판과 섭리가 이 견고한 기초 위에서 비롯됨을 보여줍니다.</p>
+                    <p class="text-lg leading-relaxed">특히 북쪽으로 향한 병거들이 하나님의 영을 쉬게 했다는 것은, 이스라엘의 주된 대적이었던 바벨론에 대한 하나님의 공의로운 심판이 완전히 성취되었음을 의미합니다. 이는 하나님의 백성에게 큰 위로를 줍니다. 하나님께서는 당신의 백성을 억압하는 세력을 결코 내버려 두지 않으시며, 당신의 때에 당신의 방법으로 반드시 심판하십니다. 이 환상은 궁극적으로 악의 세력에 대한 그리스도의 완전한 승리를 예표합니다.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div id="hidden-player-container"></div>
+    <script>
+        var player;
+        const videoId = 's-xZFdymOXY';
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('hidden-player-container', {
+                height: '1',
+                width: '1',
+                videoId: videoId,
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            const listenBtn = document.getElementById('listen-btn');
+            const buttonText = document.getElementById('button-text');
+            const playIcon = document.getElementById('play-icon');
+            const loadingIcon = document.getElementById('loading-icon');
+
+            buttonText.textContent = '설교 듣기';
+            loadingIcon.style.display = 'none';
+            playIcon.style.display = 'inline-block';
+            listenBtn.disabled = false;
+            listenBtn.addEventListener('click', togglePlay);
+        }
+
+        function onPlayerStateChange(event) {
+            const buttonText = document.getElementById('button-text');
+            const playIcon = document.getElementById('play-icon');
+            const pauseIcon = document.getElementById('pause-icon');
+            
+            if (event.data == YT.PlayerState.PLAYING) {
+                buttonText.textContent = '일시정지';
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'inline-block';
+            } else {
+                buttonText.textContent = '설교 듣기';
+                playIcon.style.display = 'inline-block';
+                pauseIcon.style.display = 'none';
+            }
+        }
+
+        function togglePlay() {
+            if (player.getPlayerState() == YT.PlayerState.PLAYING) {
+                player.pauseVideo();
+            } else {
+                player.playVideo();
+            }
+        }
+
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    </script>
+</body>
+</html>
